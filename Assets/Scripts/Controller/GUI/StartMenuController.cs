@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using CaromBilliards3D.Utility;
 using CaromBilliards3D.Services;
 
-namespace CaromBilliards3D.UI
+namespace CaromBilliards3D.Controller.GUI
 {
     public class StartMenuController : MonoBehaviour
     {

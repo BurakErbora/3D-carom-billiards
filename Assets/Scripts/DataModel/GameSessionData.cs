@@ -8,7 +8,7 @@ namespace CaromBilliards3D.DataModel
     [Serializable]
     public class GameSessionData
     {
-        public float timePlayed;
+        public int timePlayed;
         public int shotsTaken;
         public int score;
     }

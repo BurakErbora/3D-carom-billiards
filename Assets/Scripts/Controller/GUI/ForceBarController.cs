@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace CaromBilliards3D.UI
+namespace CaromBilliards3D.Controller.GUI
 {
     [RequireComponent(typeof(UIFillBar))]
     public class ForceBarController : MonoBehaviour
@@ -24,7 +24,12 @@ namespace CaromBilliards3D.UI
 
         private void OnEnable()
         {
-            _eventManager.StartListening(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANED, OnCueBallHitForcePercentChanged);
+            _eventManager.StartListening(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, OnCueBallHitForcePercentChanged);
+        }
+
+        private void OnDisable()
+        {
+            _eventManager.StopListening(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, OnCueBallHitForcePercentChanged);
         }
 
         private void OnCueBallHitForcePercentChanged(object percent)

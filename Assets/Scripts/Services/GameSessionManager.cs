@@ -23,7 +23,7 @@ namespace CaromBilliards3D.Services
             return _gameSessionData.shotsTaken;
         }
 
-        public float GetTimePlayed()
+        public int GetTimePlayed() //in seconds
         {
             return _gameSessionData.timePlayed;
         }
@@ -38,7 +38,7 @@ namespace CaromBilliards3D.Services
             _gameSessionData.shotsTaken = shotsTaken;
         }
 
-        public void SetTimePlayed(float timePlayed)
+        public void SetTimePlayed(int timePlayed) // in seconds
         {
             _gameSessionData.timePlayed = timePlayed;
         }

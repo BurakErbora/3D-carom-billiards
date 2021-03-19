@@ -10,7 +10,7 @@ namespace CaromBilliards3D.Utility
 
         public static void SaveJsonData<T>(T serializableObject, string directoryPath, string fileName, string fileExtension = ".dat")
         {
-            directoryPath = directoryPath + "//";
+            directoryPath = $"{directoryPath}//";
 
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
@@ -26,7 +26,7 @@ namespace CaromBilliards3D.Utility
 
         public static bool LoadJsonData<T>(out T serializableObject, string directoryPath, string fileName, string fileExtension = ".dat")
         {
-            directoryPath = directoryPath + "//";
+            directoryPath = $"{directoryPath}//";
             string filePath = directoryPath + fileName + fileExtension;
 
             if (File.Exists(filePath))
@@ -36,14 +36,14 @@ namespace CaromBilliards3D.Utility
                 return true;
             }
 
-            Debug.LogError("Data not found at path: " + filePath);
+            Debug.LogError($"Data not found at path: {filePath}");
             serializableObject = default(T);
             return false;
         }
 
         public static bool IsFileExists(string directoryPath, string fileName, string fileExtension = ".dat")
         {
-            directoryPath = directoryPath + "//";
+            directoryPath = $"{directoryPath}//";
             string filePath = directoryPath + fileName + fileExtension;
 
             return File.Exists(filePath);

@@ -1182,7 +1182,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1214167143}
-        m_TargetAssemblyTypeName: StartMenuControl, Assembly-CSharp
+        m_TargetAssemblyTypeName: CaromBilliards3D.UI.StartMenuController, Assembly-CSharp
         m_MethodName: OnStartNewGame
         m_Mode: 1
         m_Arguments:

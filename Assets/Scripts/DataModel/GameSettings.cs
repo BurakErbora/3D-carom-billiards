@@ -7,7 +7,7 @@ namespace CaromBilliards3D.DataModel
     public class GameSettings //: IGameSettings
     {
         //[SerializeField]
-        public float audioVolume;
+        public float audioVolume = 1;
 
         //float IGameSettings.audioVolume { get => _audioVolume; set => _audioVolume = value; }
     }

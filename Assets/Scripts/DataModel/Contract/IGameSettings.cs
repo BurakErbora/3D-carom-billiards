@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGameSettings
+namespace CaromBilliards3D.DataModel
 {
-    public float audioVolume { get; set; }
+    public interface IGameSettings
+    {
+        public float audioVolume { get; set; }
+    }
 }

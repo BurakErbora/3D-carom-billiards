@@ -1,4 +1,6 @@
-using CaromBilliards3D.UI; //!
+//using CaromBilliards3D.UI; //!
+using CaromBilliards3D.Services;
+using CaromBilliards3D.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,18 +13,21 @@ public class CueBallController : MonoBehaviour
     public float baseForce = 500f;
     public float maximumForceTicks = 10;
 
-    [Header("Test")]
-    public UIFillBar uIFillBar; //TO-DO: Decouple, implement as observer pattern
+    //[Header("Test")]
+    //public UIFillBar uIFillBar; //TO-DO: Decouple, implement as observer pattern
 
     private Rigidbody _ballRB;
     private Transform _cameraTransform;
     private float _currentHitForceScale;
     private float _lastHitForceScaleTime;
+
+    private IEventManager _eventManager;
     
     private void Awake()
     {
         _ballRB = GetComponent<Rigidbody>();
         _cameraTransform = Camera.main.transform;
+        _eventManager = ServiceLocator.Current.Get<IEventManager>();
     }
 
     void Update()
@@ -41,8 +46,10 @@ public class CueBallController : MonoBehaviour
 
                 _lastHitForceScaleTime = Time.timeSinceLevelLoad;
                 
-                Debug.Log("Force increased to " + _currentHitForceScale);
-                uIFillBar.SetFillAmount(_currentHitForceScale / maximumForceTicks); //TO-DO: Decouple, implement as observer pattern
+                Debug.Log($"Force increased to {_currentHitForceScale}");
+                //uIFillBar.SetFillAmount(_currentHitForceScale / maximumForceTicks); //TO-DO: Decouple, implement as observer pattern
+                //_eventManager.TriggerEvent("CUE_BALL_HIT_FORCE_SCALE_CHANGED", _currentHitForceScale);
+                _eventManager.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANED, _currentHitForceScale / maximumForceTicks);
             }
                 
         }
@@ -52,7 +59,8 @@ public class CueBallController : MonoBehaviour
             _ballRB.AddForce(CalculateHitForce());
             _currentHitForceScale = 0f;
             _lastHitForceScaleTime = -1;
-            uIFillBar.SetFillAmount(0); //TO-DO: Decouple, implement as observer pattern
+            //uIFillBar.SetFillAmount(0); //TO-DO: Decouple, implement as observer pattern
+            _eventManager.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANED, 0f);
         }
     }
 

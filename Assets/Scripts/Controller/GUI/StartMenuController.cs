@@ -2,13 +2,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using CaromBilliards3D.Utility;
-//using CaromBilliards3D.DataModel;
 using CaromBilliards3D.Services;
-using System;
 
 namespace CaromBilliards3D.UI
 {
-    public class StartMenuControl : MonoBehaviour
+    public class StartMenuController : MonoBehaviour
     {
         public Slider volumeSlider;
 

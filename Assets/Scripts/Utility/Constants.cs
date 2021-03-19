@@ -15,5 +15,8 @@ namespace CaromBilliards3D.Utility
         public const int SCENE_BUILD_INDEX_INITIALIZATION = 0;
         public const int SCENE_BUILD_INDEX_START_MENU = 1;
         public const int SCENE_BUILD_INDEX_MAIN = 2;
+
+        // Event related
+        public const string CUE_BALL_HIT_FORCE_PERCENT_CHANED = "CUE_BALL_HIT_FORCE_PERCENT_CHANED";
     }
 }

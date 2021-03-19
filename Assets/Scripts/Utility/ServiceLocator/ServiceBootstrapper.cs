@@ -17,7 +17,8 @@ namespace CaromBilliards3D.Utility
             ServiceLocator.Initiailze();
 
             // Register services here
-            ServiceLocator.Current.Register<IGameManager>(new GameManager());
+            ServiceLocator.Current.Register<IGameSettingsManager>(new GameSettingsManager());
+            ServiceLocator.Current.Register<IGameSessionManager>(new GameSessionManager());
             ServiceLocator.Current.Register<IEventManager>(new EventManager());
 
             SceneManager.LoadSceneAsync(Constants.SCENE_BUILD_INDEX_START_MENU, LoadSceneMode.Additive);

@@ -7,19 +7,17 @@ using UnityEngine;
 
 namespace CaromBilliards3D.Services
 {
-    public class GameManager : IGameManager
+    public class GameSettingsManager : IGameSettingsManager
     {
-        private GameSettings _gameSettings;
+        private GameSettingsData _gameSettings = new GameSettingsData();
 
-        GameSettings IGameManager.gameSettings { get => _gameSettings; set => _gameSettings = value; }
-
-        public void InitializeGameSettings()
-        {
-            _gameSettings = new GameSettings();
-        }
+        GameSettingsData IGameSettingsManager.gameSettings { get => _gameSettings; set => _gameSettings = value; }
 
         public void LoadGameSettings(string directoryPath, string fileName, string fileExtension = ".dat")
         {
+            if (!SaveLoadUtility.IsFileExists(directoryPath, fileName, fileExtension = ".dat"))
+                return;
+
             SaveLoadUtility.LoadJsonData(out _gameSettings, directoryPath, fileName, fileExtension = ".dat");
         }
 

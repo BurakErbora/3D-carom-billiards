@@ -11,7 +11,8 @@ public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
         ServiceLocator.Initiailze();
 
         // Register services here
-        ServiceLocator.Current.Register<IGameManager>(new GameManager());
+        ServiceLocator.Current.Register<IGameSettingsManager>(new GameSettingsManager());
+        ServiceLocator.Current.Register<IGameSessionManager>(new GameSessionManager());
         ServiceLocator.Current.Register<IEventManager>(new EventManager());
     }
 #endif

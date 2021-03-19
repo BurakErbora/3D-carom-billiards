@@ -12,7 +12,8 @@ namespace CaromBilliards3D.Utility
         public const string FILE_NAME_SETTINGS = "GameSettings";
 
         // Scene related
-        public const int SCENE_BUILD_INDEX_START_MENU = 0;
-        public const int SCENE_BUILD_INDEX_MAIN = 1;
+        public const int SCENE_BUILD_INDEX_INITIALIZATION = 0;
+        public const int SCENE_BUILD_INDEX_START_MENU = 1;
+        public const int SCENE_BUILD_INDEX_MAIN = 2;
     }
 }

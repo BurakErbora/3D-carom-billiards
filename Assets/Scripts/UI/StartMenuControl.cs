@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using CaromBilliards3D.Utility;
-using CaromBilliards3D.DataModel;
+//using CaromBilliards3D.DataModel;
+using CaromBilliards3D.Services;
+using System;
 
 namespace CaromBilliards3D.UI
 {
@@ -10,16 +12,20 @@ namespace CaromBilliards3D.UI
     {
         public Slider volumeSlider;
 
-        private GameSettings _gameSettings; // TO-DO: Move to a persistent singleton manager to use throughout game session.
+        private IGameManager _gameManager;
 
         private void Awake()
         {
-            // Load the game settings from previously saved session if it exists (for now audio volume only).
+            // Cache the game manager service for convenience
+            _gameManager = ServiceLocator.Current.Get<IGameManager>();
+            
+            // Load the game settings from the previously saved session if it exists (for now audio volume only).
+            _gameManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
 
-            if (SaveLoadUtility.LoadJsonData(out _gameSettings, Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES))
+            if (_gameManager.gameSettings != null)
                 UpdateUIFromGameSettings();
             else
-                _gameSettings = new GameSettings();
+                _gameManager.InitializeGameSettings();
         }
 
         private void OnEnable()
@@ -40,17 +46,17 @@ namespace CaromBilliards3D.UI
 
         private void UpdateGameSettingsFromUI() 
         {
-            _gameSettings.audioVolume = volumeSlider.value;
+            _gameManager.gameSettings.audioVolume = volumeSlider.value;
         }
         private void UpdateUIFromGameSettings()
         {
-            volumeSlider.value = _gameSettings.audioVolume;
+            volumeSlider.value = _gameManager.gameSettings.audioVolume;
         }
 
         private void SaveSettings()
         {
-            // Save settings to JSON file to persist between game sessions (and be read from during main game).
-            SaveLoadUtility.SaveJsonData(_gameSettings, Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            // Save settings to a JSON file to persist between game sessions (and be read from during main game).
+            _gameManager.SaveGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
         }
     }
 }

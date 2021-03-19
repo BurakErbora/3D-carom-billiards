@@ -24,7 +24,7 @@ namespace CaromBilliards3D.Utility
             File.WriteAllText(filePath, jsonString);
         }
 
-        public static bool LoadJsonData<T>(out T serializableObject,  string directoryPath, string fileName, string fileExtension = ".dat")
+        public static bool LoadJsonData<T>(out T serializableObject, string directoryPath, string fileName, string fileExtension = ".dat")
         {
             directoryPath = directoryPath + "//";
             string filePath = directoryPath + fileName + fileExtension;
@@ -35,7 +35,7 @@ namespace CaromBilliards3D.Utility
                 serializableObject = JsonUtility.FromJson<T>(jsonString);
                 return true;
             }
-            
+
             Debug.LogError("Data not found at path: " + filePath);
             serializableObject = default(T);
             return false;

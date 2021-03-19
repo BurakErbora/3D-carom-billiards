@@ -20,5 +20,8 @@ namespace CaromBilliards3D.Utility
         public const string CUE_BALL_HIT_FORCE_PERCENT_CHANGED = "CUE_BALL_HIT_FORCE_PERCENT_CHANGED";
         public const string SESSION_DATA_TIME_UPDATED = "SESSION_DATA_TIME_UPDATED";
         public const string SESSION_DATA_SHOTS_UPDATED = "SESSION_DATA_SHOTS_UPDATED";
+        public const string GUI_REPLAY_BUTTON_CLICKED = "GUI_REPLAY_BUTTON_CLICKED";
+        public const string GUI_REPLAY_DISABLED = "GUI_REPLAY_DISABLED";
+        public const string GUI_REPLAY_ENABLED = "GUI_REPLAY_ENABLED";
     }
 }

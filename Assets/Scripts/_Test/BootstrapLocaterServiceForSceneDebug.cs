@@ -5,6 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-10000)]
 public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
 {
+#if UNITY_EDITOR
     private void Awake()
     {
         ServiceLocator.Initiailze();
@@ -13,4 +14,6 @@ public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
         ServiceLocator.Current.Register<IGameManager>(new GameManager());
         ServiceLocator.Current.Register<IEventManager>(new EventManager());
     }
+#endif
 }
+

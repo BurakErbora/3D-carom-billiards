@@ -1,3 +1,4 @@
+using CaromBilliards3D.UI; //!
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,14 @@ public class CueBallController : MonoBehaviour
     public float baseForce = 500f;
     public float maximumForceTicks = 10;
 
+    [Header("Test")]
+    public UIFillBar uIFillBar; //TO-DO: Decouple, implement as observer pattern
+
     private Rigidbody _ballRB;
     private Transform _cameraTransform;
     private float _currentHitForceScale;
     private float _lastHitForceScaleTime;
     
-    
-
     private void Awake()
     {
         _ballRB = GetComponent<Rigidbody>();
@@ -28,15 +30,19 @@ public class CueBallController : MonoBehaviour
         // Track space keypress. When space is held, scale the to-be-applied force with the hit force tick setting.
         if (Input.GetKey(KeyCode.Space))
         {
-
             if (_lastHitForceScaleTime == -1)
                 _lastHitForceScaleTime = Time.timeSinceLevelLoad;
 
             else if (Time.timeSinceLevelLoad - _lastHitForceScaleTime >= forceTimerTick)
             {
                 _currentHitForceScale = Mathf.Min(_currentHitForceScale + 1, maximumForceTicks);
+
+                
+
                 _lastHitForceScaleTime = Time.timeSinceLevelLoad;
-                Debug.Log("Force increased to " + _currentHitForceScale); // TO-DO: update GUI
+                
+                Debug.Log("Force increased to " + _currentHitForceScale);
+                uIFillBar.SetFillAmount(_currentHitForceScale / maximumForceTicks); //TO-DO: Decouple, implement as observer pattern
             }
                 
         }
@@ -46,8 +52,8 @@ public class CueBallController : MonoBehaviour
             _ballRB.AddForce(CalculateHitForce());
             _currentHitForceScale = 0f;
             _lastHitForceScaleTime = -1;
+            uIFillBar.SetFillAmount(0); //TO-DO: Decouple, implement as observer pattern
         }
-
     }
 
     private Vector3 CalculateHitForce()

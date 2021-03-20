@@ -58,6 +58,11 @@ namespace CaromBilliards3D.Services
         {
             SaveLoadUtility.SaveJsonData(_gameSessionData, directoryPath, fileName, fileExtension);
         }
+
+        public void ResetSession()
+        {
+            _gameSessionData = new GameSessionData();
+        }
     }
 }
 

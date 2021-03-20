@@ -37,11 +37,5 @@ namespace CaromBilliards3D.Controller.GUI
             _forceBarFill.SetFillAmount((float)percent);
             forcePercentText.text = $"{(float)percent * 100} %";
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

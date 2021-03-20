@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using CaromBilliards3D.Services;
 using CaromBilliards3D.Utility;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 [DefaultExecutionOrder(-10000)]
 public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
 {
-#if UNITY_EDITOR
+    private IEventManager _eventManager;
+
     private void Awake()
     {
         ServiceLocator.Initiailze();
@@ -14,7 +16,20 @@ public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
         ServiceLocator.Current.Register<IGameSettingsManager>(new GameSettingsManager());
         ServiceLocator.Current.Register<IGameSessionManager>(new GameSessionManager());
         ServiceLocator.Current.Register<IEventManager>(new EventManager());
+
+        _eventManager = ServiceLocator.Resolve<IEventManager>();
     }
-#endif
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.BackQuote)) //modify and use contents for quick testing
+        {
+            Debug.Log("Triggering Game Over");
+            _eventManager.TriggerEvent(Constants.GAME_OVER);
+        }
+    }
+
+
 }
+#endif
 

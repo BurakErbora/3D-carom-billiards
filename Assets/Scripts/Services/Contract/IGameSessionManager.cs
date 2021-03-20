@@ -14,5 +14,6 @@ namespace CaromBilliards3D.Services
         public void SetShotsTaken(int shotsTaken);
         public void LoadGameSessionData(string directoryPath, string fileName, string fileExtension = ".dat");
         public void SaveGameSessionData(string directoryPath, string fileName, string fileExtension = ".dat");
+        public void ResetSession();
     }
 }

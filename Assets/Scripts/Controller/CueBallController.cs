@@ -1,6 +1,7 @@
 using CaromBilliards3D.Services;
 using CaromBilliards3D.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CaromBilliards3D.Controller
@@ -39,6 +40,9 @@ namespace CaromBilliards3D.Controller
         private Vector3 _cachedCueBallPosition;
         private Vector3 _cachedHitForce;
 
+        private List<BallController> _hitBallsDuringShot = new List<BallController>();
+        private BallController _currentlyHitBall;
+
         private IEventManager _eventManager;
         private IGameSessionManager _gameSessionManager;
 
@@ -57,7 +61,6 @@ namespace CaromBilliards3D.Controller
             _cameraTransform = Camera.main.transform;
             _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
             _eventManager = ServiceLocator.Resolve<IEventManager>();
-            _timeSinceLastTick = Time.timeSinceLevelLoad;
 
             _cachedCueBallPosition = transform.position;
             _cachedRedTargetBallPosition = redTargetBall.transform.position;
@@ -68,13 +71,13 @@ namespace CaromBilliards3D.Controller
             stateHolder.updateDelegates[(int)ControllerState.AwaitingInput] = UpdateAwaitingInput;
             stateHolder.updateDelegates[(int)ControllerState.BallInMotion] = UpdateBallInMotion;
             stateHolder.updateDelegates[(int)ControllerState.Replay] = UpdateReplay;
-
-            stateHolder.SetState((int)ControllerState.AwaitingInput);
         }
 
         private void OnEnable()
         {
             _eventManager.StartListening(Constants.GUI_REPLAY_BUTTON_CLICKED, OnReplayButtonClicked);
+            _gameSessionManager.ResetSession();
+            stateHolder.SetState((int)ControllerState.AwaitingInput);
         }
 
         private void OnDisable()
@@ -145,6 +148,7 @@ namespace CaromBilliards3D.Controller
                 _lastHitForceScaleTime = -1;
                 
                 _gameSessionManager.SetShotsTaken(_gameSessionManager.GetShotsTaken() + 1);
+                _hitBallsDuringShot.Clear();
 
                 _eventManager.TriggerEvent(Constants.SESSION_DATA_SHOTS_UPDATED);
                 _eventManager.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, 0f);
@@ -157,6 +161,8 @@ namespace CaromBilliards3D.Controller
         {
             if (!pauseTimerDuringShot)
                 DoTimerUpdate();
+
+            //Debug.Log($"_hitBallsDuringShot: {_hitBallsDuringShot.Count}");
         }
 
         private void UpdateReplay()
@@ -201,6 +207,34 @@ namespace CaromBilliards3D.Controller
 
             _eventManager.TriggerEvent(Constants.GUI_REPLAY_STATE_CHANGED, true);
             stateHolder.SetState((int)ControllerState.Replay);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            _currentlyHitBall = collision.gameObject.GetComponent<BallController>();
+
+            if (_currentlyHitBall)
+            {
+                //TO-DO: sound;
+
+                if (!_hitBallsDuringShot.Contains(_currentlyHitBall))
+                {
+                    Debug.Log("UNIQUE HIT!");
+                    _hitBallsDuringShot.Add(_currentlyHitBall);
+                    
+                    if (_hitBallsDuringShot.Count == Constants.GAMEPLAY_TOTAL_TARGET_BALL_COUNT)
+                    {
+                        _gameSessionManager.SetScore(_gameSessionManager.GetScore() + 1);
+                        _eventManager.TriggerEvent(Constants.SESSION_DATA_SCORE_UPDATED);
+                        Debug.Log("SCORE!");
+                        if (_gameSessionManager.GetScore() == Constants.GAMEPLAY_TOTAL_SCORES_TO_WIN)
+                        {
+                            _eventManager.TriggerEvent(Constants.GAME_OVER);
+                            Debug.Log("GAME OVER!");
+                        }
+                    }
+                }
+            }
         }
     }
 }

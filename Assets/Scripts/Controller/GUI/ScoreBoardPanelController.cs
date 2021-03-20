@@ -27,12 +27,14 @@ namespace CaromBilliards3D.Controller.GUI
         {
             _eventManager.StartListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
             _eventManager.StartListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
+            _eventManager.StartListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
         }
 
         private void OnDisable()
         {
             _eventManager.StopListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
             _eventManager.StopListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
+            _eventManager.StopListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
         }
 
         private void UpdateTimeText()
@@ -43,6 +45,11 @@ namespace CaromBilliards3D.Controller.GUI
         private void UpdateShotsText()
         {
             shotsTakenText.text = $"{_gameSessionManager.GetShotsTaken()}";
+        }        
+
+        private void UpdateScoreText()
+        {
+            scoreText.text = $"{_gameSessionManager.GetScore()}";
         }
 
     }

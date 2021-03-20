@@ -10,6 +10,6 @@ namespace CaromBilliards3D.DataModel
     {
         public int timePlayed;
         public int shotsTaken;
-        public int score;
+        [NonSerialized] public int score; // no need to; will always be the same with Constants.GAMEPLAY_TOTAL_SCORES_TO_WIN
     }
 }

@@ -3,24 +3,31 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using CaromBilliards3D.Utility;
 using CaromBilliards3D.Services;
+using TMPro;
 
 namespace CaromBilliards3D.Controller.GUI
 {
     public class StartMenuController : MonoBehaviour
     {
         public Slider volumeSlider;
+        public TextMeshProUGUI totalShotsTakenText;
+        public TextMeshProUGUI totalTimeText;
 
         private IGameSettingsManager _gameSettingsManager;
+        private IGameSessionManager _gameSessionManager;
 
         private void Awake()
         {
-            // Cache the game manager service for convenience
             _gameSettingsManager = ServiceLocator.Resolve<IGameSettingsManager>();
-            
-            // Load the game settings from the previously saved session if it exists (for now audio volume only).
-            _gameSettingsManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
 
+            // Load the game settings from the previously saved session if it exists (for now audio volume only).
+
+            _gameSettingsManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            _gameSessionManager.LoadGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION, Constants.EXTENSION_SAVE_FILES);
+            
             UpdateUIFromGameSettings();
+            UpdateUIFromGameSessionData();
 
         }
 
@@ -47,6 +54,11 @@ namespace CaromBilliards3D.Controller.GUI
         private void UpdateUIFromGameSettings()
         {
             volumeSlider.value = _gameSettingsManager.gameSettings.audioVolume;
+        }
+        private void UpdateUIFromGameSessionData()
+        {
+            totalShotsTakenText.text = $"{_gameSessionManager.GetShotsTaken()}";
+            totalTimeText.text = $"{_gameSessionManager.GetTimePlayed()} s";
         }
 
         private void SaveSettings()

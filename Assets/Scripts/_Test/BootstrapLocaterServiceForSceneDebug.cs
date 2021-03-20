@@ -27,6 +27,20 @@ public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
             Debug.Log("Triggering Game Over");
             _eventManager.TriggerEvent(Constants.GAME_OVER);
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            float randomValue = Random.Range(0f, 1f);
+            Debug.Log($"Triggering BallHitBall with Random value: {randomValue}");
+            _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_BALL, randomValue);
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            float randomValue = Random.Range(0f, 1f);
+            Debug.Log($"Triggering BallHitWall with Random value: {randomValue}"); 
+            _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_WALL, randomValue);
+        }
     }
 
 

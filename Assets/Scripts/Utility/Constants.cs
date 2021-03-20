@@ -26,6 +26,8 @@ namespace CaromBilliards3D.Utility
         public const string GUI_REPLAY_BUTTON_CLICKED = "GUI_REPLAY_BUTTON_CLICKED";
         public const string GUI_REPLAY_POSSIBILITY_CHANGED = "GUI_REPLAY_POSSIBILITY_CHANGED";
         public const string GUI_REPLAY_STATE_CHANGED = "GUI_REPLAY_STATE_CHANGED";
+        public const string AUDIO_BALL_HIT_BALL = "AUDIO_BALL_HIT_BALL";
+        public const string AUDIO_BALL_HIT_WALL = "AUDIO_BALL_HIT_WALL";
 
         // Gameplay related
         public const int GAMEPLAY_TOTAL_TARGET_BALL_COUNT = 2;

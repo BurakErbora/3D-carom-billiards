@@ -45,6 +45,7 @@ namespace CaromBilliards3D.Controller
 
         private IEventManager _eventManager;
         private IGameSessionManager _gameSessionManager;
+        private IGameSettingsManager _gameSettingsManager;
 
         private enum ControllerState { AwaitingInput, BallInMotion, Replay }
 
@@ -59,7 +60,12 @@ namespace CaromBilliards3D.Controller
 
             _cueBallRB = GetComponent<Rigidbody>();
             _cameraTransform = Camera.main.transform;
+
             _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
+
+            _gameSettingsManager = ServiceLocator.Resolve<IGameSettingsManager>();
+            _gameSettingsManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+
             _eventManager = ServiceLocator.Resolve<IEventManager>();
 
             _cachedCueBallPosition = transform.position;
@@ -215,25 +221,34 @@ namespace CaromBilliards3D.Controller
 
             if (_currentlyHitBall)
             {
-                //TO-DO: sound;
+                // The interpolation here with 100f as max sqrMagnitude is purely empirical.
+                // In most sensible scenarios sqrMagnitude will be between 10 and 500, and in some extreme speeds will be a lot more (around 2000).
+                // I clamp these cases as 500 max as well here.
+                _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_BALL, Mathf.Clamp01(_cueBallRB.velocity.sqrMagnitude / 500f));
+                //Debug.Log($"Triggering BallHitBall with sqrMagnitude: {_cueBallRB.velocity.sqrMagnitude}, resulting in: {_cueBallRB.velocity.sqrMagnitude / 500f}");
 
                 if (!_hitBallsDuringShot.Contains(_currentlyHitBall))
                 {
-                    Debug.Log("UNIQUE HIT!");
+                    //Debug.Log("UNIQUE HIT!");
                     _hitBallsDuringShot.Add(_currentlyHitBall);
                     
                     if (_hitBallsDuringShot.Count == Constants.GAMEPLAY_TOTAL_TARGET_BALL_COUNT)
                     {
                         _gameSessionManager.SetScore(_gameSessionManager.GetScore() + 1);
                         _eventManager.TriggerEvent(Constants.SESSION_DATA_SCORE_UPDATED);
-                        Debug.Log("SCORE!");
+                        //Debug.Log("SCORE!");
                         if (_gameSessionManager.GetScore() == Constants.GAMEPLAY_TOTAL_SCORES_TO_WIN)
                         {
                             _eventManager.TriggerEvent(Constants.GAME_OVER);
-                            Debug.Log("GAME OVER!");
+                            //Debug.Log("GAME OVER!");
                         }
                     }
                 }
+            }
+            else // if not a ball, we must be hitting a wall
+            {
+                _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_WALL, Mathf.Clamp01(_cueBallRB.velocity.sqrMagnitude / 500f));
+                //Debug.Log($"Triggering BallHitWall with sqrMagnitude: {_cueBallRB.velocity.sqrMagnitude}, resulting in: {_cueBallRB.velocity.sqrMagnitude / 500f}");
             }
         }
     }

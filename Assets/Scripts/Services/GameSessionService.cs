@@ -1,17 +1,14 @@
 using CaromBilliards3D.DataModel;
 using CaromBilliards3D.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace CaromBilliards3D.Services
 {
-    public class GameSessionManager : IGameSessionManager
+    public class GameSessionService : IGameSessionService
     {
         private GameSessionData _gameSessionData = new GameSessionData();
 
-        GameSessionData IGameSessionManager.gameSessionData { get => _gameSessionData; set => _gameSessionData = value; }
+        GameSessionData IGameSessionService.gameSessionData { get => _gameSessionData; set => _gameSessionData = value; }
 
         public int GetScore()
         {

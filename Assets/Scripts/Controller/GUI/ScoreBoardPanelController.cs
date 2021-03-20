@@ -14,42 +14,42 @@ namespace CaromBilliards3D.Controller.GUI
         public TextMeshProUGUI scoreText;
         public TextMeshProUGUI shotsTakenText;
 
-        private IEventManager _eventManager;
-        private IGameSessionManager _gameSessionManager;
+        private IEventService _eventService;
+        private IGameSessionService _gameSessionService;
 
         private void Awake()
         {
-            _eventManager = ServiceLocator.Resolve<IEventManager>();
-            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
+            _eventService = ServiceLocator.Resolve<IEventService>();
+            _gameSessionService = ServiceLocator.Resolve<IGameSessionService>();
         }
 
         private void OnEnable()
         {
-            _eventManager.StartListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
-            _eventManager.StartListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
-            _eventManager.StartListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
+            _eventService.StartListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
+            _eventService.StartListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
+            _eventService.StartListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
         }
 
         private void OnDisable()
         {
-            _eventManager.StopListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
-            _eventManager.StopListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
-            _eventManager.StopListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
+            _eventService.StopListening(Constants.SESSION_DATA_TIME_UPDATED, UpdateTimeText);
+            _eventService.StopListening(Constants.SESSION_DATA_SHOTS_UPDATED, UpdateShotsText);
+            _eventService.StopListening(Constants.SESSION_DATA_SCORE_UPDATED, UpdateScoreText);
         }
 
         private void UpdateTimeText()
         {
-            totalTimeText.text = $"{_gameSessionManager.GetTimePlayed()} s";
+            totalTimeText.text = $"{_gameSessionService.GetTimePlayed()} s";
         }
 
         private void UpdateShotsText()
         {
-            shotsTakenText.text = $"{_gameSessionManager.GetShotsTaken()}";
+            shotsTakenText.text = $"{_gameSessionService.GetShotsTaken()}";
         }        
 
         private void UpdateScoreText()
         {
-            scoreText.text = $"{_gameSessionManager.GetScore()}";
+            scoreText.text = $"{_gameSessionService.GetScore()}";
         }
 
     }

@@ -3,7 +3,7 @@ using CaromBilliards3D.Utility;
 
 namespace CaromBilliards3D.Services
 {
-    public interface IGameSessionManager : IBaseService
+    public interface IGameSessionService : IBaseService
     {
         public GameSessionData gameSessionData { get; set; }
         public int GetTimePlayed();

@@ -1,5 +1,5 @@
 
-namespace CaromBilliards3D.Utility
+namespace CaromBilliards3D.Services
 {
     public interface IBaseService { }
 }

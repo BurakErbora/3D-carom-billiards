@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CaromBilliards3D.Services
 {
-    public interface IEventManager : IBaseService
+    public interface IEventService : IBaseService
     {
         public void StartListening(string eventName, Action listener);
         public void StartListening(string eventName, Action<object> listener);

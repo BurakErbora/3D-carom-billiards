@@ -10,42 +10,42 @@ namespace CaromBilliards3D.Manager
         public AudioClip ballHitBallClip;
         public AudioClip ballHitWallClip;
 
-        private IEventManager _eventManager;
-        private IGameSettingsManager _gameSettingsManager;
+        private IEventService _eventService;
+        private IGameSettingsService _gameSettingsService;
         private AudioSource _audiosource;
 
         private void Awake()
         {
-            _eventManager = ServiceLocator.Resolve<IEventManager>();
-            _gameSettingsManager = ServiceLocator.Resolve<IGameSettingsManager>();
+            _eventService = ServiceLocator.Resolve<IEventService>();
+            _gameSettingsService = ServiceLocator.Resolve<IGameSettingsService>();
             _audiosource = GetComponent<AudioSource>();
         }
 
         private void OnEnable()
         {
-            _eventManager.StartListening(Constants.AUDIO_BALL_HIT_BALL, OnBallHitBall);
-            _eventManager.StartListening(Constants.AUDIO_BALL_HIT_WALL, OnBallHitWall);
+            _eventService.StartListening(Constants.AUDIO_BALL_HIT_BALL, OnBallHitBall);
+            _eventService.StartListening(Constants.AUDIO_BALL_HIT_WALL, OnBallHitWall);
         }
 
         private void OnDisable()
         {
-            _eventManager.StopListening(Constants.AUDIO_BALL_HIT_BALL, OnBallHitBall);
-            _eventManager.StopListening(Constants.AUDIO_BALL_HIT_WALL, OnBallHitWall);
+            _eventService.StopListening(Constants.AUDIO_BALL_HIT_BALL, OnBallHitBall);
+            _eventService.StopListening(Constants.AUDIO_BALL_HIT_WALL, OnBallHitWall);
         }
 
         private void OnBallHitBall(object interpolatedForce) // interpolatedForce: float force as between 0 - 1 based on game logic (not including volume)
         {
             _audiosource.clip = ballHitBallClip;
-            _audiosource.volume = (float)interpolatedForce * _gameSettingsManager.gameSettings.audioVolume;
-            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsManager.gameSettings.audioVolume} - Result: {_audiosource.volume}");
+            _audiosource.volume = (float)interpolatedForce * _gameSettingsService.gameSettings.audioVolume;
+            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
             _audiosource.Play();
         }
 
         private void OnBallHitWall(object interpolatedForce) // interpolatedForce: float force as between 0 - 1 based on game logic (not including volume)
         {
             _audiosource.clip = ballHitWallClip;
-            _audiosource.volume = (float)interpolatedForce * _gameSettingsManager.gameSettings.audioVolume;
-            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsManager.gameSettings.audioVolume} - Result: {_audiosource.volume}");
+            _audiosource.volume = (float)interpolatedForce * _gameSettingsService.gameSettings.audioVolume;
+            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
             _audiosource.Play();
         }
     }

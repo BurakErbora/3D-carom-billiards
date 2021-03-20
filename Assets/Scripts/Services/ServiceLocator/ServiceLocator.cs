@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CaromBilliards3D.Utility
+namespace CaromBilliards3D.Services
 {
     public class ServiceLocator
     {

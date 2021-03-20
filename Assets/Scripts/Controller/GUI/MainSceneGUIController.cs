@@ -9,21 +9,21 @@ namespace CaromBilliards3D.Controller.GUI
         public GameObject gamePlayGUI;
         public GameObject gameOverGUI;
 
-        private IEventManager _eventmanager;
+        private IEventService _eventService;
 
         private void Awake()
         {
-            _eventmanager = ServiceLocator.Resolve<IEventManager>();
+            _eventService = ServiceLocator.Resolve<IEventService>();
         }
 
         private void OnEnable()
         {
-            _eventmanager.StartListening(Constants.GAME_OVER, OnGameOver);
+            _eventService.StartListening(Constants.GAME_OVER, OnGameOver);
         }
 
         private void OnDisable()
         {
-            _eventmanager.StopListening(Constants.GAME_OVER, OnGameOver);
+            _eventService.StopListening(Constants.GAME_OVER, OnGameOver);
         }
 
         private void OnGameOver()

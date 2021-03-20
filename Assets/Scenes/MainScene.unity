@@ -454,11 +454,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 200777711}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6bc2cc0c29732a4d836b592c900d1cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de508a364866cb4e8d0a3150c7dff59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stopBallTreshold: 0.03
-  ballRB: {fileID: 0}
 --- !u!1 &201309143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,11 +1239,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 530696712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6bc2cc0c29732a4d836b592c900d1cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de508a364866cb4e8d0a3150c7dff59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stopBallTreshold: 0.03
-  ballRB: {fileID: 0}
 --- !u!1 &545753437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2127,7 +2125,6 @@ GameObject:
   - component: {fileID: 852068510}
   - component: {fileID: 852068513}
   - component: {fileID: 852068514}
-  - component: {fileID: 852068515}
   m_Layer: 0
   m_Name: CueBall
   m_TagString: Untagged
@@ -2239,20 +2236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02a0472a786de0409d254c88aedeb64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &852068515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852068508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6bc2cc0c29732a4d836b592c900d1cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   stopBallTreshold: 0.03
-  ballRB: {fileID: 0}
 --- !u!1 &924520300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,9 +2271,9 @@ MonoBehaviour:
   forceTimerTick: 0.01
   baseForce: 1
   maximumForceTicks: 100
-  cueBall: {fileID: 852068508}
-  yellowTargetBall: {fileID: 200777711}
-  redTargetBall: {fileID: 530696712}
+  cueBall: {fileID: 852068514}
+  yellowTargetBall: {fileID: 200777717}
+  redTargetBall: {fileID: 530696718}
 --- !u!4 &924520302
 Transform:
   m_ObjectHideFlags: 0

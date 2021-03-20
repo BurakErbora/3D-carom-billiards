@@ -14,12 +14,12 @@ namespace CaromBilliards3D.Controller.GUI
         private Button _replayButton;
         public TextMeshProUGUI replayText;
 
-        private IEventManager _eventManager;
+        private IEventService _eventService;
 
         private void Awake()
         {
             _replayButton = GetComponent<Button>();
-            _eventManager = ServiceLocator.Resolve<IEventManager>();
+            _eventService = ServiceLocator.Resolve<IEventService>();
 
         }
 
@@ -28,20 +28,20 @@ namespace CaromBilliards3D.Controller.GUI
             if (replayText)
             {
                 replayText.gameObject.SetActive(false);
-                _eventManager.StartListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
+                _eventService.StartListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
             }
             _replayButton.onClick.AddListener(OnReplayButtonClick);
-            _eventManager.StartListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
+            _eventService.StartListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
             
         }
 
         private void OnDisable()
         {
             _replayButton.onClick.RemoveListener(OnReplayButtonClick);
-            _eventManager.StopListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
+            _eventService.StopListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
 
             if (replayText)
-                _eventManager.StopListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
+                _eventService.StopListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
         }
 
 
@@ -59,7 +59,7 @@ namespace CaromBilliards3D.Controller.GUI
 
         private void OnReplayButtonClick()
         {
-            _eventManager.TriggerEvent(Constants.GUI_REPLAY_BUTTON_CLICKED);
+            _eventService.TriggerEvent(Constants.GUI_REPLAY_BUTTON_CLICKED);
         }
     }
 }

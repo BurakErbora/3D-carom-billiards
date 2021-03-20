@@ -1,9 +1,8 @@
+using CaromBilliards3D.Utility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using CaromBilliards3D.Services;
-
-namespace CaromBilliards3D.Utility
+namespace CaromBilliards3D.Services
 {
     public static class ServiceBootstrapper
     {
@@ -17,9 +16,9 @@ namespace CaromBilliards3D.Utility
             ServiceLocator.Initiailze();
 
             // Register services here
-            ServiceLocator.Current.Register<IGameSettingsManager>(new GameSettingsManager());
-            ServiceLocator.Current.Register<IGameSessionManager>(new GameSessionManager());
-            ServiceLocator.Current.Register<IEventManager>(new EventManager());
+            ServiceLocator.Current.Register<IGameSettingsService>(new GameSettingsService());
+            ServiceLocator.Current.Register<IGameSessionService>(new GameSessionService());
+            ServiceLocator.Current.Register<IEventService>(new EventService());
 
             SceneManager.LoadSceneAsync(Constants.SCENE_BUILD_INDEX_START_MENU, LoadSceneMode.Additive);
         }

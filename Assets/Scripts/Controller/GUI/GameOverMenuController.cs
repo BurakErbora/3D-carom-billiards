@@ -10,18 +10,18 @@ namespace CaromBilliards3D.Controller.GUI
     {
         public TextMeshProUGUI totalShotsTakenText;
         public TextMeshProUGUI totalTimeText;
-        private IGameSessionManager _gameSessionManager;
+        private IGameSessionService _gameSessionService;
 
         private void Awake()
         {
-            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
+            _gameSessionService = ServiceLocator.Resolve<IGameSessionService>();
         }
 
         private void OnEnable() // When this gui is enabled, it's game over for sure end nothing else. Do all the game over game logic here.
         {
-            totalShotsTakenText.text = _gameSessionManager.GetShotsTaken().ToString();
-            totalTimeText.text = $"{_gameSessionManager.GetTimePlayed()} s";
-            _gameSessionManager.SaveGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION);
+            totalShotsTakenText.text = _gameSessionService.GetShotsTaken().ToString();
+            totalTimeText.text = $"{_gameSessionService.GetTimePlayed()} s";
+            _gameSessionService.SaveGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION);
         }
 
         public void OnReturnToMainMenuClicked()

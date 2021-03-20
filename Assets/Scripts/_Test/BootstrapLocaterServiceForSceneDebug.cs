@@ -6,18 +6,18 @@ using UnityEngine;
 [DefaultExecutionOrder(-10000)]
 public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
 {
-    private IEventManager _eventManager;
+    private IEventService _eventService;
 
     private void Awake()
     {
         ServiceLocator.Initiailze();
 
         // Register services here
-        ServiceLocator.Current.Register<IGameSettingsManager>(new GameSettingsManager());
-        ServiceLocator.Current.Register<IGameSessionManager>(new GameSessionManager());
-        ServiceLocator.Current.Register<IEventManager>(new EventManager());
+        ServiceLocator.Current.Register<IGameSettingsService>(new GameSettingsService());
+        ServiceLocator.Current.Register<IGameSessionService>(new GameSessionService());
+        ServiceLocator.Current.Register<IEventService>(new EventService());
 
-        _eventManager = ServiceLocator.Resolve<IEventManager>();
+        _eventService = ServiceLocator.Resolve<IEventService>();
     }
 
     private void Update()
@@ -25,21 +25,21 @@ public class BootstrapLocaterServiceForSceneDebug : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.BackQuote)) //modify and use contents for quick testing
         {
             Debug.Log("Triggering Game Over");
-            _eventManager.TriggerEvent(Constants.GAME_OVER);
+            _eventService.TriggerEvent(Constants.GAME_OVER);
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
             float randomValue = Random.Range(0f, 1f);
             Debug.Log($"Triggering BallHitBall with Random value: {randomValue}");
-            _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_BALL, randomValue);
+            _eventService.TriggerEvent(Constants.AUDIO_BALL_HIT_BALL, randomValue);
         }
 
         if (Input.GetKeyDown(KeyCode.V))
         {
             float randomValue = Random.Range(0f, 1f);
             Debug.Log($"Triggering BallHitWall with Random value: {randomValue}"); 
-            _eventManager.TriggerEvent(Constants.AUDIO_BALL_HIT_WALL, randomValue);
+            _eventService.TriggerEvent(Constants.AUDIO_BALL_HIT_WALL, randomValue);
         }
     }
 

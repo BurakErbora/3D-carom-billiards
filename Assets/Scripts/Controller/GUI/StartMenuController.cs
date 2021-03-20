@@ -13,18 +13,18 @@ namespace CaromBilliards3D.Controller.GUI
         public TextMeshProUGUI totalShotsTakenText;
         public TextMeshProUGUI totalTimeText;
 
-        private IGameSettingsManager _gameSettingsManager;
-        private IGameSessionManager _gameSessionManager;
+        private IGameSettingsService _gameSettingsService;
+        private IGameSessionService _gameSessionService;
 
         private void Awake()
         {
-            _gameSettingsManager = ServiceLocator.Resolve<IGameSettingsManager>();
-            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
+            _gameSettingsService = ServiceLocator.Resolve<IGameSettingsService>();
+            _gameSessionService = ServiceLocator.Resolve<IGameSessionService>();
 
             // Load the game settings from the previously saved session if it exists (for now audio volume only).
 
-            _gameSettingsManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
-            _gameSessionManager.LoadGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION, Constants.EXTENSION_SAVE_FILES);
+            _gameSettingsService.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            _gameSessionService.LoadGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION, Constants.EXTENSION_SAVE_FILES);
             
             UpdateUIFromGameSettings();
             UpdateUIFromGameSessionData();
@@ -49,22 +49,22 @@ namespace CaromBilliards3D.Controller.GUI
 
         private void UpdateGameSettingsFromUI() 
         {
-            _gameSettingsManager.gameSettings.audioVolume = volumeSlider.value;
+            _gameSettingsService.gameSettings.audioVolume = volumeSlider.value;
         }
         private void UpdateUIFromGameSettings()
         {
-            volumeSlider.value = _gameSettingsManager.gameSettings.audioVolume;
+            volumeSlider.value = _gameSettingsService.gameSettings.audioVolume;
         }
         private void UpdateUIFromGameSessionData()
         {
-            totalShotsTakenText.text = $"{_gameSessionManager.GetShotsTaken()}";
-            totalTimeText.text = $"{_gameSessionManager.GetTimePlayed()} s";
+            totalShotsTakenText.text = $"{_gameSessionService.GetShotsTaken()}";
+            totalTimeText.text = $"{_gameSessionService.GetTimePlayed()} s";
         }
 
         private void SaveSettings()
         {
             // Save settings to a JSON file to persist between game sessions (and be read from during main game).
-            _gameSettingsManager.SaveGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            _gameSettingsService.SaveGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
         }
     }
 }

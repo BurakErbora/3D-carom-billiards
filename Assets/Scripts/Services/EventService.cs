@@ -3,7 +3,7 @@ using System;
 
 namespace CaromBilliards3D.Services
 {
-    public class EventManager : IEventManager
+    public class EventService : IEventService
     {
         private Dictionary<string, Action> _eventDictionary = new Dictionary<string, Action>();
         private Dictionary<string, Action<object>> _eventDictionaryWithSingleParameter = new Dictionary<string, Action<object>>();

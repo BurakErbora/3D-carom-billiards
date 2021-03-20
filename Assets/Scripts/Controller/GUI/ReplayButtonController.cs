@@ -23,34 +23,24 @@ namespace CaromBilliards3D.Controller.GUI
         private void OnEnable()
         {
             _replayButton.onClick.AddListener(OnReplayButtonClick);
-            _eventManager.StartListening(Constants.GUI_REPLAY_ENABLED, OnReplayEnabled);
-            _eventManager.StartListening(Constants.GUI_REPLAY_DISABLED, OnReplayDisabled);
+            _eventManager.StartListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayToggled);
         }
 
         private void OnDisable()
         {
             _replayButton.onClick.RemoveListener(OnReplayButtonClick);
-            _eventManager.StopListening(Constants.GUI_REPLAY_DISABLED, OnReplayDisabled);
-            _eventManager.StopListening(Constants.GUI_REPLAY_ENABLED, OnReplayEnabled);
+            _eventManager.StopListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayToggled);
         }
 
+
+        private void OnReplayToggled(object isEnabled)
+        {
+            _replayButton.interactable = (bool)isEnabled;
+        }
 
         private void OnReplayButtonClick()
         {
             _eventManager.TriggerEvent(Constants.GUI_REPLAY_BUTTON_CLICKED);
         }
-
-        private void OnReplayDisabled()
-        {
-            _replayButton.interactable = false;
-            Debug.Log("Replay Button set interactible FALSE");
-        }
-
-        private void OnReplayEnabled()
-        {
-            _replayButton.interactable = true;
-            Debug.Log("Replay Button set interactible TRUE");
-        }
-
     }
 }

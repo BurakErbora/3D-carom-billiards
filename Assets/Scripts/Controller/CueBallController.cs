@@ -8,6 +8,10 @@ namespace CaromBilliards3D.Controller
     [RequireComponent(typeof(Rigidbody))]
     public class CueBallController : MonoBehaviourWithStates
     {
+        [Header("Timer Calculation")]
+        public bool pauseTimerDuringReplay;
+        public bool pauseTimerDuringShot;
+
         [Header("Hit Force")]
         public float forceTimerTick = 0.5f;
         public float baseForce = 500f;
@@ -18,10 +22,16 @@ namespace CaromBilliards3D.Controller
         public GameObject redTargetBall;
 
         private Rigidbody _cueBallRB;
+        private Rigidbody _yellowTargetBallRB;
+        private Rigidbody _redTargetBallRB;
         private Transform _cameraTransform;
         private float _currentHitForceScale;
         private float _lastHitForceScaleTime;
         private float _timeSinceLastTick;
+
+        private bool _isAddForceQueued; // to apply the force in FixedUpdate
+        private bool _isBallMoving;
+        private bool _wasBallMoving;
 
         // for the replay
         private Vector3 _cachedYellowTargetBallPosition;
@@ -36,6 +46,13 @@ namespace CaromBilliards3D.Controller
 
         private void Awake()
         {
+            
+            _yellowTargetBallRB = yellowTargetBall.GetComponent<Rigidbody>();
+            _redTargetBallRB = redTargetBall.GetComponent<Rigidbody>();
+
+            if (!_yellowTargetBallRB || !_redTargetBallRB)
+                Debug.LogError("Target balls must have an attached Rigidbody!");
+
             _cueBallRB = GetComponent<Rigidbody>();
             _cameraTransform = Camera.main.transform;
             _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
@@ -60,6 +77,30 @@ namespace CaromBilliards3D.Controller
         private void OnDisable()
         {
             _eventManager.StopListening(Constants.GUI_REPLAY_BUTTON_CLICKED, OnReplayButtonClicked);
+        }
+
+        private void FixedUpdate()
+        {
+            if (_isAddForceQueued)
+            {
+                _cueBallRB.AddForce(_cachedHitForce, ForceMode.Impulse);
+                _isAddForceQueued = false;
+                _eventManager.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, false);
+                return; // skip one physics update to calculate _isBallMoving, so the applied force can be taken into account
+            }
+
+            _isBallMoving = _cueBallRB.velocity.sqrMagnitude != 0f;
+
+            if (_wasBallMoving != _isBallMoving) // if the ball moving state just changed
+            {
+                if (!_isBallMoving) // if the ball has just come to a stop
+                {
+                    _eventManager.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, true);
+                    stateHolder.SetState((int)ControllerState.AwaitingInput);
+                }
+
+                _wasBallMoving = _isBallMoving;
+            }
         }
 
         #region Update States
@@ -89,14 +130,15 @@ namespace CaromBilliards3D.Controller
                 _cachedRedTargetBallPosition = redTargetBall.transform.position;
                 _cachedHitForce = CalculateHitForce();
 
-                _cueBallRB.AddForce(_cachedHitForce);
+                _isAddForceQueued = true;
+                
                 _currentHitForceScale = 0f;
                 _lastHitForceScaleTime = -1;
-                _gameSessionManager.SetShotsTaken(_gameSessionManager.GetShotsTaken() + 1);
                 
+                _gameSessionManager.SetShotsTaken(_gameSessionManager.GetShotsTaken() + 1);
+
                 _eventManager.TriggerEvent(Constants.SESSION_DATA_SHOTS_UPDATED);
                 _eventManager.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, 0f);
-                _eventManager.TriggerEvent(Constants.GUI_REPLAY_DISABLED);
 
                 stateHolder.SetState((int)ControllerState.BallInMotion);
             }
@@ -104,28 +146,14 @@ namespace CaromBilliards3D.Controller
 
         private void UpdateBallInMotion()
         {
-            DoTimerUpdate();
-
-            if (_cueBallRB.velocity.magnitude > 0f) //sqrMagnitude bugs.
-            {
-                //TO-DO: check score
-            }
-            else
-            {
-                _eventManager.TriggerEvent(Constants.GUI_REPLAY_ENABLED);
-                stateHolder.SetState((int)ControllerState.AwaitingInput);
-            }
+            if (!pauseTimerDuringShot)
+                DoTimerUpdate();
         }
 
         private void UpdateReplay()
         {
+            if (!pauseTimerDuringReplay)
             DoTimerUpdate();
-
-            if (_cueBallRB.velocity.magnitude <= 0f) //sqrMagnitude bugs.
-            {
-                _eventManager.TriggerEvent(Constants.GUI_REPLAY_ENABLED);
-                stateHolder.SetState((int)ControllerState.AwaitingInput);
-            }
         }
 
         #endregion Update States
@@ -149,12 +177,19 @@ namespace CaromBilliards3D.Controller
         private void OnReplayButtonClicked()
         {
             redTargetBall.transform.position = _cachedRedTargetBallPosition;
-            yellowTargetBall.transform.position = _cachedYellowTargetBallPosition;
-            transform.position = _cachedCueBallPosition;
-
-            _cueBallRB.AddForce(_cachedHitForce);
+            _redTargetBallRB.velocity = Vector3.zero;
+            _redTargetBallRB.angularVelocity = Vector3.zero;
             
-            _eventManager.TriggerEvent(Constants.GUI_REPLAY_DISABLED);
+            yellowTargetBall.transform.position = _cachedYellowTargetBallPosition;
+            _yellowTargetBallRB.velocity = Vector3.zero;
+            _yellowTargetBallRB.angularVelocity = Vector3.zero;
+
+            transform.position = _cachedCueBallPosition;
+            _cueBallRB.velocity = Vector3.zero;
+            _cueBallRB.angularVelocity = Vector3.zero;
+
+            _isAddForceQueued = true;
+            
             stateHolder.SetState((int)ControllerState.Replay);
         }
     }

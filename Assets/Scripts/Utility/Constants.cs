@@ -21,7 +21,6 @@ namespace CaromBilliards3D.Utility
         public const string SESSION_DATA_TIME_UPDATED = "SESSION_DATA_TIME_UPDATED";
         public const string SESSION_DATA_SHOTS_UPDATED = "SESSION_DATA_SHOTS_UPDATED";
         public const string GUI_REPLAY_BUTTON_CLICKED = "GUI_REPLAY_BUTTON_CLICKED";
-        public const string GUI_REPLAY_DISABLED = "GUI_REPLAY_DISABLED";
-        public const string GUI_REPLAY_ENABLED = "GUI_REPLAY_ENABLED";
+        public const string GUI_REPLAY_POSSIBILITY_CHANGED = "GUI_REPLAY_POSSIBILITY_CHANGED";
     }
 }

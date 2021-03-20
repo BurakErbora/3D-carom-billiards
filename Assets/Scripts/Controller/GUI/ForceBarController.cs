@@ -19,7 +19,7 @@ namespace CaromBilliards3D.Controller.GUI
         private void Awake()
         {
             _forceBarFill = GetComponent<UIFillBar>();
-            _eventManager = ServiceLocator.Current.Get<IEventManager>();
+            _eventManager = ServiceLocator.Resolve<IEventManager>();
         }
 
         private void OnEnable()

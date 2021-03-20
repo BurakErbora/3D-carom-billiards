@@ -19,8 +19,8 @@ namespace CaromBilliards3D.Controller.GUI
 
         private void Awake()
         {
-            _eventManager = ServiceLocator.Current.Get<IEventManager>();
-            _gameSessionManager = ServiceLocator.Current.Get<IGameSessionManager>();
+            _eventManager = ServiceLocator.Resolve<IEventManager>();
+            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
         }
 
         private void OnEnable()

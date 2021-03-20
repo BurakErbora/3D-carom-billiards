@@ -16,13 +16,16 @@ namespace CaromBilliards3D.Utility
             Current = new ServiceLocator();
         }
 
+        public static T Resolve<T>() where T: IBaseService
+        {
+            return Current.Get<T>();
+        }
+        
         public T Get<T>() where T : IBaseService
         {
             string key = typeof(T).Name;
             if (!_services.ContainsKey(key))
-            {
                 Debug.LogError($"{key} not registered with {GetType().Name}");
-            }
 
             return (T)_services[key];
         }
@@ -31,9 +34,7 @@ namespace CaromBilliards3D.Utility
         {
             string key = typeof(T).Name;
             if (!_services.ContainsKey(key))
-            {
                 Debug.LogError($"{key} not registered with {GetType().Name}");
-            }
 
             return typeof(T);
         }

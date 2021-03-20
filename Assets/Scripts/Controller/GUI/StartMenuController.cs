@@ -15,7 +15,7 @@ namespace CaromBilliards3D.Controller.GUI
         private void Awake()
         {
             // Cache the game manager service for convenience
-            _gameSettingsManager = ServiceLocator.Current.Get<IGameSettingsManager>();
+            _gameSettingsManager = ServiceLocator.Resolve<IGameSettingsManager>();
             
             // Load the game settings from the previously saved session if it exists (for now audio volume only).
             _gameSettingsManager.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);

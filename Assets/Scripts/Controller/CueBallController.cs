@@ -38,8 +38,8 @@ namespace CaromBilliards3D.Controller
         {
             _cueBallRB = GetComponent<Rigidbody>();
             _cameraTransform = Camera.main.transform;
-            _gameSessionManager = ServiceLocator.Current.Get<IGameSessionManager>();
-            _eventManager = ServiceLocator.Current.Get<IEventManager>();
+            _gameSessionManager = ServiceLocator.Resolve<IGameSessionManager>();
+            _eventManager = ServiceLocator.Resolve<IEventManager>();
             _timeSinceLastTick = Time.timeSinceLevelLoad;
 
 
@@ -106,7 +106,7 @@ namespace CaromBilliards3D.Controller
         {
             DoTimerUpdate();
 
-            if (_cueBallRB.velocity.sqrMagnitude > 0f)
+            if (_cueBallRB.velocity.magnitude > 0f) //sqrMagnitude bugs.
             {
                 //TO-DO: check score
             }
@@ -121,7 +121,7 @@ namespace CaromBilliards3D.Controller
         {
             DoTimerUpdate();
 
-            if (_cueBallRB.velocity.sqrMagnitude <= 0f)
+            if (_cueBallRB.velocity.magnitude <= 0f) //sqrMagnitude bugs.
             {
                 _eventManager.TriggerEvent(Constants.GUI_REPLAY_ENABLED);
                 stateHolder.SetState((int)ControllerState.AwaitingInput);

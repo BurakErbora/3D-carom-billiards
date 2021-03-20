@@ -16,7 +16,7 @@ namespace CaromBilliards3D.Controller.GUI
         private void Awake()
         {
             _replayButton = GetComponent<Button>();
-            _eventManager = ServiceLocator.Current.Get<IEventManager>();
+            _eventManager = ServiceLocator.Resolve<IEventManager>();
             
         }
 

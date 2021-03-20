@@ -59,6 +59,9 @@ namespace CaromBilliards3D.Controller
             _eventManager = ServiceLocator.Resolve<IEventManager>();
             _timeSinceLastTick = Time.timeSinceLevelLoad;
 
+            _cachedCueBallPosition = transform.position;
+            _cachedRedTargetBallPosition = redTargetBall.transform.position;
+            _cachedYellowTargetBallPosition = yellowTargetBall.transform.position;
 
             // Setup the state machine
             stateHolder.updateDelegates = new StateHolder.UpdateDelegate[3];
@@ -96,7 +99,9 @@ namespace CaromBilliards3D.Controller
                 if (!_isBallMoving) // if the ball has just come to a stop
                 {
                     _eventManager.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, true);
+                    _eventManager.TriggerEvent(Constants.GUI_REPLAY_STATE_CHANGED, false);
                     stateHolder.SetState((int)ControllerState.AwaitingInput);
+                    
                 }
 
                 _wasBallMoving = _isBallMoving;
@@ -111,6 +116,8 @@ namespace CaromBilliards3D.Controller
             // Track space keypress. When space is held, scale the to-be-applied force with the hit force tick setting.
             if (Input.GetKey(KeyCode.Space))
             {
+                _eventManager.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, false);
+
                 if (_lastHitForceScaleTime == -1)
                     _lastHitForceScaleTime = Time.timeSinceLevelLoad;
 
@@ -124,6 +131,8 @@ namespace CaromBilliards3D.Controller
             // when released, apply the final force
             if (Input.GetKeyUp(KeyCode.Space))
             {
+                _eventManager.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, true);
+
                 //Set cached info for replay
                 _cachedCueBallPosition = transform.position;
                 _cachedYellowTargetBallPosition = yellowTargetBall.transform.position;
@@ -153,7 +162,7 @@ namespace CaromBilliards3D.Controller
         private void UpdateReplay()
         {
             if (!pauseTimerDuringReplay)
-            DoTimerUpdate();
+                DoTimerUpdate();
         }
 
         #endregion Update States
@@ -189,7 +198,8 @@ namespace CaromBilliards3D.Controller
             _cueBallRB.angularVelocity = Vector3.zero;
 
             _isAddForceQueued = true;
-            
+
+            _eventManager.TriggerEvent(Constants.GUI_REPLAY_STATE_CHANGED, true);
             stateHolder.SetState((int)ControllerState.Replay);
         }
     }

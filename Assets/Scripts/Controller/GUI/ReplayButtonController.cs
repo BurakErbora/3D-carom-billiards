@@ -2,6 +2,7 @@ using CaromBilliards3D.Services;
 using CaromBilliards3D.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,31 +12,49 @@ namespace CaromBilliards3D.Controller.GUI
     public class ReplayButtonController : MonoBehaviour
     {
         private Button _replayButton;
-        private IEventManager _eventManager; 
+        public TextMeshProUGUI replayText;
+
+        private IEventManager _eventManager;
 
         private void Awake()
         {
             _replayButton = GetComponent<Button>();
             _eventManager = ServiceLocator.Resolve<IEventManager>();
-            
+
         }
 
         private void OnEnable()
         {
+            if (replayText)
+            {
+                replayText.gameObject.SetActive(false);
+                _eventManager.StartListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
+            }
             _replayButton.onClick.AddListener(OnReplayButtonClick);
-            _eventManager.StartListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayToggled);
+            _eventManager.StartListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
+            
         }
 
         private void OnDisable()
         {
             _replayButton.onClick.RemoveListener(OnReplayButtonClick);
-            _eventManager.StopListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayToggled);
+            _eventManager.StopListening(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, OnReplayButtonToggled);
+
+            if (replayText)
+                _eventManager.StopListening(Constants.GUI_REPLAY_STATE_CHANGED, OnReplayStateToggled);
         }
 
 
-        private void OnReplayToggled(object isEnabled)
+        private void OnReplayButtonToggled(object isEnabled)
         {
             _replayButton.interactable = (bool)isEnabled;
+
+            
+        }
+
+        private void OnReplayStateToggled(object isReplaying)
+        {
+            replayText.gameObject.SetActive((bool)isReplaying);
         }
 
         private void OnReplayButtonClick()

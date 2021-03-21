@@ -4034,7 +4034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fdd3e806b44914bad777121ba74a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSimulationIterations: 100
+  maxSimulationIterations: 50
   cueBall: {fileID: 852068514}
   yellowTargetBall: {fileID: 200777717}
   redTargetBall: {fileID: 530696718}

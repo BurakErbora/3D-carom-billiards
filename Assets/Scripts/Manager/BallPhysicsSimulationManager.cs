@@ -135,13 +135,13 @@ namespace CaromBilliards3D.Manager
 
         public void SimulateBallTrajectory(object force)
         {
-            Physics.autoSimulation = false;
-
             // skip simulation if result will be the same
             if (_cachedForce == (Vector3)force)
                 return;
             else
                 _cachedForce = (Vector3)force;
+
+            Physics.autoSimulation = false;
 
             if (_currentPhysicsScene.IsValid() && _simulationPhysicsScene.IsValid())
             {

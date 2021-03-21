@@ -4,12 +4,12 @@ using UnityEngine;
 namespace CaromBilliards3D.Controller
 {
     // Base class for cue and target ball classes. Basically stops the ball when the rigidbody bugs and keeps a small velocity on the ball.
-    // Subclasses also deal with ball collision logic.
+    // Subclasses deal with ball collision logic.
     [RequireComponent(typeof(Rigidbody))]
     public abstract class BallController : MonoBehaviour
     {
-        [Range(0f, 0.05f)]
-        public float stopBallTreshold = 0.03f;
+        [Range(0f, 0.05f)][SerializeField]
+        protected float stopBallTreshold = 0.03f;
 
         protected Rigidbody ballRB;
 

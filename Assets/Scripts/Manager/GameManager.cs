@@ -20,7 +20,7 @@ namespace CaromBilliards3D.Manager
         public BallController cueBall;
         public BallController yellowTargetBall;
         public BallController redTargetBall;
-        
+
 
         private Rigidbody _cueBallRB;
         private Rigidbody _yellowTargetBallRB;
@@ -29,6 +29,8 @@ namespace CaromBilliards3D.Manager
         private float _currentHitForceScale;
         private float _lastHitForceScaleTime;
         private float _timeSinceLastTick;
+
+        private Vector3 _shootDirection;
 
         private bool _isAddForceQueued; // to apply the force in FixedUpdate
         private bool _isBallMoving;
@@ -39,8 +41,6 @@ namespace CaromBilliards3D.Manager
         private Vector3 _cachedRedTargetBallPosition;
         private Vector3 _cachedCueBallPosition;
         private Vector3 _cachedHitForce;
-
-        
 
         private IEventService _eventService;
         private IGameSessionService _gameSessionService;
@@ -131,6 +131,7 @@ namespace CaromBilliards3D.Manager
                     _currentHitForceScale = Mathf.Min(_currentHitForceScale + 1, maximumForceTicks);
                     _lastHitForceScaleTime = Time.timeSinceLevelLoad;
                     _eventService.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, _currentHitForceScale / maximumForceTicks);
+                    _eventService.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_VALUE_CHANGED, CalculateHitForce());
                 }
             }
             // when released, apply the final force
@@ -150,7 +151,7 @@ namespace CaromBilliards3D.Manager
                 _lastHitForceScaleTime = -1;
 
                 _gameSessionService.SetShotsTaken(_gameSessionService.GetShotsTaken() + 1);
-                
+
                 _eventService.TriggerEvent(Constants.SESSION_DATA_SHOTS_UPDATED);
                 _eventService.TriggerEvent(Constants.CUE_BALL_HIT_FORCE_PERCENT_CHANGED, 0f);
 
@@ -187,7 +188,10 @@ namespace CaromBilliards3D.Manager
 
         private Vector3 CalculateHitForce()
         {
-            return _cameraTransform.forward * _currentHitForceScale * baseForce;
+            _shootDirection = _cameraTransform.forward;
+            _shootDirection.y = 0;
+
+            return _shootDirection * _currentHitForceScale * baseForce;
         }
 
         private void OnReplayButtonClicked()
@@ -209,5 +213,18 @@ namespace CaromBilliards3D.Manager
             _eventService.TriggerEvent(Constants.GUI_REPLAY_STATE_CHANGED, true);
             stateHolder.SetState((int)ControllerState.Replay);
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (Application.isPlaying)
+            {
+                _shootDirection = _cameraTransform.forward;
+                _shootDirection.y = 0;
+
+                Gizmos.DrawRay(_cameraTransform.position, CalculateHitForce());
+            }
+        }
+#endif
     }
 }

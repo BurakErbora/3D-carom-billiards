@@ -30,7 +30,7 @@ namespace CaromBilliards3D.Manager
         private float _lastHitForceScaleTime;
         private float _timeSinceLastTick;
 
-        private Vector3 _shootDirection;
+        private Vector3 _shootDirection; // to ignore Camera.forwad.y without creating a vector each frame
 
         private bool _isAddForceQueued; // to apply the force in FixedUpdate
         private bool _isBallMoving;
@@ -46,6 +46,7 @@ namespace CaromBilliards3D.Manager
         private IGameSessionService _gameSessionService;
         private IGameSettingsService _gameSettingsService;
 
+        // State machine states
         private enum ControllerState { AwaitingInput, BallInMotion, Replay }
 
         private void Awake()

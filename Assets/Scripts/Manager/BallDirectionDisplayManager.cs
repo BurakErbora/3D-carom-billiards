@@ -1,7 +1,6 @@
 using CaromBilliards3D.Controller;
 using CaromBilliards3D.Services;
 using CaromBilliards3D.Utility;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +8,7 @@ using UnityEngine.SceneManagement;
 namespace CaromBilliards3D.Manager
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class BallPhysicsSimulationManager : MonoBehaviour
+    public class BallDirectionDisplayManager : MonoBehaviour
     {
         [Header("General")]
         public int maxSimulationIterations = 30;
@@ -68,7 +67,7 @@ namespace CaromBilliards3D.Manager
             _eventService.StopListening(Constants.SESSION_DATA_SHOTS_UPDATED, CleanSimulatedBallTrajectory);
         }
 
-        void FixedUpdate()
+        void FixedUpdate() // shouldn't be necessary, but to be on the safe side.
         {
             if (!Physics.autoSimulation && _currentPhysicsScene.IsValid())
                 _currentPhysicsScene.Simulate(Time.fixedDeltaTime);

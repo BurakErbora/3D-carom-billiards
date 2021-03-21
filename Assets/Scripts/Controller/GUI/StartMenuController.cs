@@ -21,14 +21,14 @@ namespace CaromBilliards3D.Controller.GUI
             _gameSettingsService = ServiceLocator.Resolve<IGameSettingsService>();
             _gameSessionService = ServiceLocator.Resolve<IGameSessionService>();
 
-            // Load the game settings from the previously saved session if it exists (for now audio volume only).
-
+            // Load game settings from the previously saved session if it exists (for now audio volume only).
             _gameSettingsService.LoadGameSettings(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_SETTINGS, Constants.EXTENSION_SAVE_FILES);
+            
+            // Load game data from the previously saved session if it exists (saved during game over).
             _gameSessionService.LoadGameSessionData(Constants.DIRECTORY_PATH_SAVES, Constants.FILE_NAME_LAST_SESSION, Constants.EXTENSION_SAVE_FILES);
             
             UpdateUIFromGameSettings();
             UpdateUIFromGameSessionData();
-
         }
 
         private void OnEnable()

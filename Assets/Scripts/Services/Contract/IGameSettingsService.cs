@@ -1,5 +1,4 @@
 using CaromBilliards3D.DataModel;
-using CaromBilliards3D.Utility;
 
 namespace CaromBilliards3D.Services
 {

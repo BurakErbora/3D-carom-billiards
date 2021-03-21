@@ -37,16 +37,18 @@ namespace CaromBilliards3D.Manager
         {
             _audiosource.clip = ballHitBallClip;
             _audiosource.volume = (float)interpolatedForce * _gameSettingsService.gameSettings.audioVolume;
-            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
             _audiosource.Play();
+
+            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
         }
 
         private void OnBallHitWall(object interpolatedForce) // interpolatedForce: float force as between 0 - 1 based on game logic (not including volume)
         {
             _audiosource.clip = ballHitWallClip;
             _audiosource.volume = (float)interpolatedForce * _gameSettingsService.gameSettings.audioVolume;
-            //Debug.Log($"Ball hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
             _audiosource.Play();
+
+            //Debug.Log($"Wall hit sound. interpolatedForce: {interpolatedForce}, audioVolume: {_gameSettingsService.gameSettings.audioVolume} - Result: {_audiosource.volume}");
         }
     }
 }

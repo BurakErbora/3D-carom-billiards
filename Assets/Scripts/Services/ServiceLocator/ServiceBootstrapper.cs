@@ -9,7 +9,6 @@ namespace CaromBilliards3D.Services
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Initiailze()
         {
-
             if (SceneManager.GetActiveScene().buildIndex != Constants.SCENE_BUILD_INDEX_INITIALIZATION)
                 return;
 

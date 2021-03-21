@@ -4,8 +4,6 @@ namespace CaromBilliards3D.Utility
 {
     public class StateHolder
     {
-        
-
         public delegate void UpdateDelegate();
         public UpdateDelegate[] updateDelegates;
 

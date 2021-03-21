@@ -16,7 +16,7 @@ namespace CaromBilliards3D.Services
                 _eventDictionary.Add(eventName, listener);
         }
 
-        // not the best way to send generic parameters but it'll have to do.
+        // not the best way to send generic parameters but it'll have to do to keep this simple.
         // Subscribing methods will need to cast the parameter to their own known type.
         public void StartListening(string eventName, Action<object> listener)
         {

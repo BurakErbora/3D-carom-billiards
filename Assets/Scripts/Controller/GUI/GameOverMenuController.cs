@@ -17,7 +17,7 @@ namespace CaromBilliards3D.Controller.GUI
             _gameSessionService = ServiceLocator.Resolve<IGameSessionService>();
         }
 
-        private void OnEnable() // When this gui is enabled, it's game over for sure end nothing else. Do all the game over game logic here.
+        private void OnEnable() // When this GUI is enabled, it's game over for sure end nothing else. Do all the game over game logic here.
         {
             totalShotsTakenText.text = _gameSessionService.GetShotsTaken().ToString();
             totalTimeText.text = $"{_gameSessionService.GetTimePlayed()} s";

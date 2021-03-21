@@ -4002,7 +4002,7 @@ GameObject:
   - component: {fileID: 1380965254}
   - component: {fileID: 1380965253}
   m_Layer: 0
-  m_Name: BallPhysicsSimulationManager
+  m_Name: BallDirectionDisplayManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

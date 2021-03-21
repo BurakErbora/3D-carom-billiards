@@ -1,7 +1,6 @@
 using CaromBilliards3D.Services;
 using CaromBilliards3D.Utility;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +10,9 @@ namespace CaromBilliards3D.Controller.GUI
     [RequireComponent(typeof(Button))]
     public class ReplayButtonController : MonoBehaviour
     {
-        private Button _replayButton;
         public TextMeshProUGUI replayText;
 
+        private Button _replayButton;
         private IEventService _eventService;
 
         private void Awake()
@@ -48,11 +47,10 @@ namespace CaromBilliards3D.Controller.GUI
         private void OnReplayButtonToggled(object isEnabled)
         {
             _replayButton.interactable = (bool)isEnabled;
-
-            
         }
 
-        private void OnReplayStateToggled(object isReplaying)
+        private void OnReplayStateToggled(object isReplaying) // there might be cases where the Replay button is disabled but the game is not in replay mode (like ball force buildup). 
+                                                              // thus OnReplayButtonToggled and OnReplayStateToggled are seperate callbacks.
         {
             replayText.gameObject.SetActive((bool)isReplaying);
         }

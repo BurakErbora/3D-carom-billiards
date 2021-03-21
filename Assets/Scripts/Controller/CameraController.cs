@@ -25,8 +25,7 @@ namespace CaromBilliards3D.Controller
         }
 
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetMouseButton(1))
             {

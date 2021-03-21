@@ -137,7 +137,7 @@ namespace CaromBilliards3D.Manager
             // when released, apply the final force
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                _eventService.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, true);
+                //_eventService.TriggerEvent(Constants.GUI_REPLAY_POSSIBILITY_CHANGED, true);
 
                 //Set cached info for replay
                 _cachedCueBallPosition = cueBall.transform.position;

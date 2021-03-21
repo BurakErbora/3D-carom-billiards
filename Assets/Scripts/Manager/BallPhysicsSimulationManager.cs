@@ -23,10 +23,6 @@ namespace CaromBilliards3D.Manager
         private Rigidbody _yellowTargetBallRB;
         private Rigidbody _redTargetBallRB;
 
-        //private GameObject _simulatedCueBall;
-        //private GameObject _simulatedCueBall;
-        //private GameObject _simulatedCueBall;
-
         private Rigidbody _simulatedCueBallRB;
         private Rigidbody _simulatedYelllowTargetBallRB;
         private Rigidbody _simulatedRedTargetBallRB;
@@ -128,7 +124,7 @@ namespace CaromBilliards3D.Manager
                     _simulatedRedTargetBallRB = simulationObject.GetComponent<Rigidbody>();
 
                 SceneManager.MoveGameObjectToScene(simulationObject, _simulationScene);
-                Debug.Log($"Added Simulation object: {simulationObject.name}");
+                //Debug.Log($"Added Simulation object: {simulationObject.name}");
 
             }
         }

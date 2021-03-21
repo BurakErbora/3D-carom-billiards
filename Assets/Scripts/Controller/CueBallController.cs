@@ -47,18 +47,18 @@ namespace CaromBilliards3D.Controller
 
                 if (!_hitBallsDuringShot.Contains(_currentlyHitBall))
                 {
-                    //Debug.Log("UNIQUE HIT!");
+                    Debug.Log($"UNIQUE HIT: {_currentlyHitBall.name}");
                     _hitBallsDuringShot.Add(_currentlyHitBall);
                     
                     if (_hitBallsDuringShot.Count == Constants.GAMEPLAY_TOTAL_TARGET_BALL_COUNT)
                     {
                         _gameSessionService.SetScore(_gameSessionService.GetScore() + 1);
                         eventService.TriggerEvent(Constants.SESSION_DATA_SCORE_UPDATED);
-                        //Debug.Log("SCORE!");
+                        Debug.Log("SCORE!");
                         if (_gameSessionService.GetScore() == Constants.GAMEPLAY_TOTAL_SCORES_TO_WIN)
                         {
                             eventService.TriggerEvent(Constants.GAME_OVER);
-                            //Debug.Log("GAME OVER!");
+                            Debug.Log("GAME OVER!");
                         }
                     }
                 }
